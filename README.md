@@ -1,5 +1,7 @@
 # Elbo Room Heritage License Program
 
+**[View the full strategy site](https://artemis-lgtm.github.io/Elbo-Room-Franchise/)**
+
 ## Strategic Expansion & Property Acquisition
 
 ---

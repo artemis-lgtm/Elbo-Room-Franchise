@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elbo Room Heritage License Program</title>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #1a1a1a;
+      --surface-hover: #222;
+      --border: #2a2a2a;
+      --text: #e0e0e0;
+      --text-muted: #888;
+      --accent: #c9a84c;
+      --accent-dim: #a07c2a;
+      --red: #c44;
+      --green: #4a8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: #e0c060; }
+
+    /* Header */
+    .hero {
+      text-align: center;
+      padding: 80px 24px 60px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, #141414 0%, var(--bg) 100%);
+    }
+    .hero h1 {
+      font-size: 2.8rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      margin-bottom: 8px;
+    }
+    .hero .est {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .hero .tagline {
+      font-size: 1.15rem;
+      color: var(--text);
+      font-style: italic;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    /* Nav */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13,13,13,0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+    }
+    nav a {
+      padding: 14px 20px;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      transition: color 0.2s;
+    }
+    nav a:hover, nav a.active { color: var(--accent); }
+
+    /* Sections */
+    section {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 60px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    section:last-of-type { border-bottom: none; }
+    h2 {
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--accent);
+      margin-bottom: 32px;
+      letter-spacing: 0.03em;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text);
+      margin: 32px 0 12px;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+    }
+    h4 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--accent-dim);
+      margin: 24px 0 8px;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    p { margin-bottom: 16px; }
+    ul, ol { margin: 0 0 16px 24px; }
+    li { margin-bottom: 6px; }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0 24px;
+      font-size: 0.9rem;
+    }
+    th {
+      text-align: left;
+      padding: 10px 12px;
+      background: var(--surface);
+      color: var(--accent);
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border-bottom: 2px solid var(--accent-dim);
+    }
+    td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+    tr:hover td { background: var(--surface); }
+
+    /* Cards */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 20px;
+    }
+    .card h4 { margin-top: 0; }
+    .card p:last-child { margin-bottom: 0; }
+
+    /* Status badges */
+    .badge {
+      display: inline-block;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: 3px;
+    }
+    .badge-done { background: #1a3a2a; color: var(--green); }
+    .badge-pending { background: #3a2a1a; color: var(--accent); }
+    .badge-blocked { background: #3a1a1a; color: var(--red); }
+
+    /* Callout */
+    .callout {
+      border-left: 3px solid var(--accent);
+      padding: 16px 20px;
+      background: var(--surface);
+      margin: 24px 0;
+      font-style: italic;
+    }
+    .callout strong { font-style: normal; }
+
+    /* Tier markers */
+    .tier {
+      display: inline-block;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+    .tier-1 { background: var(--accent-dim); color: #fff; }
+    .tier-2 { background: #2a4a3a; color: var(--green); }
+    .tier-3 { background: #2a2a4a; color: #88a; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 24px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Contributor section */
+    .contrib-note {
+      background: var(--surface);
+      border: 1px solid var(--accent-dim);
+      border-radius: 6px;
+      padding: 20px;
+      margin: 24px 0;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.9rem;
+    }
+    .contrib-note code {
+      background: #222;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.85rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 1.8rem; }
+      section { padding: 40px 16px; }
+      nav a { padding: 10px 12px; font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Elbo Room</h1>
+  <div class="est">Heritage License Program &mdash; Est. 1938</div>
+  <p class="tagline">"The bar your neighborhood can't afford to lose."</p>
+</div>
+
+<nav>
+  <a href="#overview">Overview</a>
+  <a href="#financials">Financials</a>
+  <a href="#tiers">License Tiers</a>
+  <a href="#entity">Entity Structure</a>
+  <a href="#sba">SBA 504</a>
+  <a href="#sites">Site Selection</a>
+  <a href="#comps">Comp Analysis</a>
+  <a href="#timeline">Timeline</a>
+  <a href="#team">Team</a>
+</nav>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <h2>The Opportunity</h2>
+  <p>The Elbo Room has been a Fort Lauderdale landmark since 1938 &mdash; 88 years on the corner of Las Olas and A1A. The sublease expires in 2036 with no renewal option. The property acquisition plan has a gap.</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>Current Capacity</h4>
+      <p style="font-size: 2rem; color: var(--accent); margin-bottom: 4px;">~$8M</p>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">Wells Fargo borrowing capacity at 6.5%</p>
+    </div>
+    <div class="card">
+      <h4>Target Price</h4>
+      <p style="font-size: 2rem; color: var(--red); margin-bottom: 4px;">~$15M</p>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">Minimum estimated property value</p>
+    </div>
+    <div class="card">
+      <h4>The Gap</h4>
+      <p style="font-size: 2rem; color: var(--accent); margin-bottom: 4px;">~$7M</p>
+      <p style="color: var(--text-muted); font-size: 0.85rem;">Heritage License Program closes this</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>The Heritage License Program</strong> generates revenue to close the gap while building a brand that makes the Fort Lauderdale flagship more valuable, not less. Not a franchise. Not a chain. A seal of authenticity.
+  </div>
+</section>
+
+<!-- FINANCIALS -->
+<section id="financials">
+  <h2>Financial Projections</h2>
+  <p>Growth rate: 5% conservative. Austin rejected the 7% optimistic scenario. We plan conservative, celebrate moderate.</p>
+
+  <h3>Borrowing Capacity Growth (5% Annual)</h3>
+  <table>
+    <tr><th>Year</th><th>Capacity</th><th>Gap to $15M</th></tr>
+    <tr><td>2026</td><td>$8.0M</td><td>$7.0M</td></tr>
+    <tr><td>2028</td><td>$8.8M</td><td>$6.2M</td></tr>
+    <tr><td>2030</td><td>$9.7M</td><td>$5.3M</td></tr>
+    <tr><td>2032</td><td>$10.7M</td><td>$4.3M</td></tr>
+    <tr><td>2034</td><td>$11.8M</td><td>$3.2M</td></tr>
+    <tr><td>2036</td><td>~$16.0M*</td><td>Closed</td></tr>
+  </table>
+  <p style="font-size: 0.85rem; color: var(--text-muted);">*Zero margin for error &mdash; one bad year, one rate spike breaks it. The licensing program provides the cushion.</p>
+
+  <h3>Conservative Licensing Revenue (Licensing Focus)</h3>
+  <table>
+    <tr><th>Year</th><th>New</th><th>Active</th><th>Upfront</th><th>Annual</th><th>Cumulative</th></tr>
+    <tr><td>2027</td><td>2</td><td>2</td><td>$75K</td><td>$100K</td><td>$175K</td></tr>
+    <tr><td>2028</td><td>3</td><td>5</td><td>$112K</td><td>$250K</td><td>$537K</td></tr>
+    <tr><td>2029</td><td>3</td><td>8</td><td>$112K</td><td>$400K</td><td>$1.05M</td></tr>
+    <tr><td>2030</td><td>4</td><td>12</td><td>$150K</td><td>$600K</td><td>$1.8M</td></tr>
+    <tr><td>2031</td><td>4</td><td>15</td><td>$150K</td><td>$750K</td><td>$2.7M</td></tr>
+    <tr><td>2032</td><td>3</td><td>17</td><td>$112K</td><td>$850K</td><td>$3.66M</td></tr>
+  </table>
+
+  <h3>Moderate Scenario (Heritage Partner Focus)</h3>
+  <table>
+    <tr><th>Year</th><th>New</th><th>Active</th><th>Upfront</th><th>Annual</th><th>Cumulative</th></tr>
+    <tr><td>2027</td><td>2</td><td>2</td><td>$175K</td><td>$130K</td><td>$305K</td></tr>
+    <tr><td>2028</td><td>3</td><td>5</td><td>$262K</td><td>$325K</td><td>$892K</td></tr>
+    <tr><td>2029</td><td>4</td><td>9</td><td>$350K</td><td>$585K</td><td>$1.83M</td></tr>
+    <tr><td>2030</td><td>5</td><td>13</td><td>$437K</td><td>$845K</td><td>$3.11M</td></tr>
+    <tr><td>2031</td><td>5</td><td>17</td><td>$437K</td><td>$1.1M</td><td>$4.65M</td></tr>
+    <tr><td>2032</td><td>4</td><td>20</td><td>$350K</td><td>$1.3M</td><td>$6.3M</td></tr>
+  </table>
+
+  <h3>Gap Closing Timeline</h3>
+  <table>
+    <tr><th>Path</th><th>Gap Closes By</th><th>Confidence</th></tr>
+    <tr><td>Organic growth only (5%)</td><td>~2036</td><td style="color: var(--red);">Low &mdash; no margin</td></tr>
+    <tr><td>Conservative licensing + growth</td><td>~2032-2033</td><td style="color: var(--accent);">Medium</td></tr>
+    <tr><td>Moderate licensing + growth</td><td>~2030-2031</td><td style="color: var(--green);">Medium-High</td></tr>
+    <tr><td>Licensing + SBA 504</td><td>~2029-2030</td><td style="color: var(--green);">High</td></tr>
+  </table>
+
+  <div class="callout">
+    Licensing accelerates the timeline by 4-6 years. That's the entire business case &mdash; not the licensing revenue itself, but what it does to the property acquisition timeline.
+  </div>
+
+  <h3>Operating Expenses (Annual)</h3>
+  <table>
+    <tr><th>Category</th><th>Year 1-2</th><th>Year 3-5</th><th>Year 5+</th></tr>
+    <tr><td>Franchise Attorney</td><td>$15K-$25K</td><td>$5K-$10K</td><td>$5K</td></tr>
+    <tr><td>Brand Development</td><td>$20K-$30K</td><td>$10K</td><td>$5K</td></tr>
+    <tr><td>Marketing/Sales</td><td>$15K-$25K</td><td>$25K-$40K</td><td>$40K-$60K</td></tr>
+    <tr><td>Operations Staff</td><td>$0</td><td>$60K-$80K</td><td>$120K-$160K</td></tr>
+    <tr><td>Legal/Compliance</td><td>$10K-$15K</td><td>$10K-$15K</td><td>$15K-$25K</td></tr>
+    <tr><td>Insurance</td><td>$5K-$10K</td><td>$10K-$15K</td><td>$15K-$25K</td></tr>
+    <tr><td style="color: var(--accent); font-weight: 600;">Total</td><td style="color: var(--accent);">$65K-$105K</td><td style="color: var(--accent);">$120K-$160K</td><td style="color: var(--accent);">$200K-$275K</td></tr>
+  </table>
+  <p style="font-size: 0.85rem; color: var(--text-muted);">Year 1-2: break-even. Year 3-4: 30-45% margin. Year 5+: 50-60% margin at scale.</p>
+</section>
+
+<!-- TIERS -->
+<section id="tiers">
+  <h2>License Tiers</h2>
+
+  <div class="card-grid">
+    <div class="card">
+      <h4>Heritage License</h4>
+      <p><strong style="font-size: 1.3rem; color: var(--accent);">$25K-$50K</strong> upfront</p>
+      <p>$2,500-$5,000/mo + 3% royalty</p>
+      <p style="color: var(--text-muted); font-size: 0.9rem;">For existing bar operators seeking brand elevation. Lower entry cost, lighter touch. Operator brings the venue, we bring the brand and system.</p>
+    </div>
+    <div class="card">
+      <h4>Heritage Partner</h4>
+      <p><strong style="font-size: 1.3rem; color: var(--accent);">$75K-$100K</strong> upfront</p>
+      <p>$3,500-$7,000/mo + 4% royalty</p>
+      <p style="color: var(--text-muted); font-size: 0.9rem;">For new builds or major renovations. Full consultative package &mdash; site selection, buildout guidance, operational training, ongoing support.</p>
+    </div>
+    <div class="card">
+      <h4>Flagship License</h4>
+      <p><strong style="font-size: 1.3rem; color: var(--accent);">By Negotiation</strong></p>
+      <p>Revenue share model</p>
+      <p style="color: var(--text-muted); font-size: 0.9rem;">Major market anchor locations. Full partnership, premium positioning. Reserved for Tier 1 markets with exceptional operators.</p>
+    </div>
+  </div>
+
+  <h3>Competitive Fee Comparison</h3>
+  <table>
+    <tr><th>Brand</th><th>Franchise Fee</th><th>Royalty</th><th>Marketing</th><th>Total Investment</th></tr>
+    <tr><td>Coyote Ugly</td><td>$40K-$65K</td><td>6%</td><td>2%</td><td>$300K-$800K</td></tr>
+    <tr><td>Margaritaville</td><td>$45K-$75K</td><td>6-8%</td><td>2-3%</td><td>$1M-$8M</td></tr>
+    <tr><td style="color: var(--accent);">Elbo Heritage License</td><td>$25K-$50K</td><td>3%</td><td>Included</td><td>$150K-$400K</td></tr>
+    <tr><td style="color: var(--accent);">Elbo Heritage Partner</td><td>$75K-$100K</td><td>4%</td><td>Included</td><td>$300K-$600K</td></tr>
+  </table>
+  <p style="font-size: 0.85rem; color: var(--text-muted);">The Heritage License undercuts both comps on entry cost &mdash; right positioning for "existing bar operator seeking brand elevation."</p>
+</section>
+
+<!-- ENTITY -->
+<section id="entity">
+  <h2>Entity Structure</h2>
+  <p><span class="badge badge-pending">Draft</span> Requires franchise attorney review before any entity formation.</p>
+
+  <h3>Recommended: Hybrid (Phase 1)</h3>
+  <div class="callout">
+    <strong>Elbo Room LLC</strong> &mdash; operates bar, holds lease, will be SBA borrower<br>
+    <strong>Elbo Room Heritage LLC</strong> &mdash; owns IP, manages licensing program
+  </div>
+  <p>Simple enough to execute now. Sophisticated enough to not paint anyone into a corner. SBA 504 compatible. Clear migration path to holding company structure when licensing scales past 10 locations.</p>
+
+  <h3>Why Not Simpler?</h3>
+  <p>A single LLC puts licensing liability next to the property. One lawsuit from a licensed location could theoretically reach the real estate. The two-entity split costs ~$1K more per year in maintenance but provides clean liability isolation.</p>
+
+  <h3>Why Not More Complex?</h3>
+  <p>A full holding company (4+ LLCs) costs $5K-$10K/year in compliance and is over-engineered for zero licensed locations. Build it when scale justifies it (2029+).</p>
+
+  <h3>Formation Costs</h3>
+  <table>
+    <tr><th>Item</th><th>Cost</th></tr>
+    <tr><td>LLC formations (2 entities)</td><td>$1,000-$2,000</td></tr>
+    <tr><td>Operating agreements</td><td>$3,000-$5,000</td></tr>
+    <tr><td>Franchise attorney (initial)</td><td>$10,000-$25,000</td></tr>
+    <tr><td>Trademark filing (3 classes)</td><td>$2,000-$4,000</td></tr>
+    <tr><td style="color: var(--accent); font-weight: 600;">Total</td><td style="color: var(--accent);">$16,000-$36,000</td></tr>
+  </table>
+
+  <h3>FTC Franchise Rule Risk</h3>
+  <p>If the Heritage License triggers the FTC Franchise Rule (ongoing control + fee + trademark), it becomes a de facto franchise requiring full FDD compliance &mdash; $50K-$75K+ in legal costs. The franchise attorney's first job is drawing this line.</p>
+</section>
+
+<!-- SBA -->
+<section id="sba">
+  <h2>SBA 504 Loan Program</h2>
+
+  <h3>Loan Structure on $15M Purchase</h3>
+  <table>
+    <tr><th>Component</th><th>%</th><th>Amount</th><th>Rate</th><th>Monthly</th></tr>
+    <tr><td>Bank Loan (Wells Fargo)</td><td>50%</td><td>$7.5M</td><td>~6.5%</td><td>~$50,600</td></tr>
+    <tr><td>SBA Debenture</td><td>40%</td><td>$6.0M</td><td>~5.0% fixed</td><td>~$35,100</td></tr>
+    <tr><td>Owner Equity</td><td>10%</td><td>$1.5M</td><td>&mdash;</td><td>&mdash;</td></tr>
+    <tr><td style="color: var(--accent); font-weight: 600;">Total Monthly</td><td></td><td></td><td></td><td style="color: var(--accent);">~$85,700</td></tr>
+  </table>
+  <p>SBA 504 saves ~$15,300/month ($183,600/year) vs. conventional financing. Equity requirement of $1.5M is reachable by 2031 through licensing retained earnings + flagship cash flow.</p>
+
+  <h3>Key Eligibility Requirements</h3>
+  <ul>
+    <li>Owner must occupy 51%+ of building</li>
+    <li>For-profit, active management (not passive investment)</li>
+    <li>Net worth under $15M</li>
+    <li>Average net income under $5M for prior 2 years <span class="badge badge-pending">Verify</span></li>
+    <li>Business qualifies as "small" under SBA standards</li>
+    <li>Personal guarantees from all owners with 20%+ stake</li>
+  </ul>
+
+  <h3>Process Timeline: 6-12 Months</h3>
+  <table>
+    <tr><th>Phase</th><th>Duration</th><th>Key Activities</th></tr>
+    <tr><td>Preparation</td><td>Month 1-2</td><td>Tax returns, financials, business plan, appraisal, Phase I environmental</td></tr>
+    <tr><td>Lender Engagement</td><td>Month 3-4</td><td>Wells Fargo meeting, identify CDC, submit application</td></tr>
+    <tr><td>Underwriting</td><td>Month 5-8</td><td>Financial review, property inspection, SBA authorization</td></tr>
+    <tr><td>Closing</td><td>Month 9-12</td><td>Final docs, title, insurance, funding</td></tr>
+  </table>
+
+  <h3>Closing Costs</h3>
+  <p style="font-size: 1.1rem; color: var(--accent);">~$170,000-$195,000</p>
+  <p style="font-size: 0.85rem; color: var(--text-muted);">Interest savings vs. conventional pay for closing costs within 12-14 months.</p>
+</section>
+
+<!-- SITE SELECTION -->
+<section id="sites">
+  <h2>Site Selection</h2>
+
+  <div class="callout">
+    The question isn't "does this look like the Elbo Room?" It's "could this bar still be here in 50 years?"
+  </div>
+
+  <h3>Non-Negotiable Requirements</h3>
+  <ul>
+    <li>Walkable neighborhood &mdash; not strip malls or highway locations</li>
+    <li>Street-level with visibility (corner preferred)</li>
+    <li>Outdoor potential &mdash; patio, sidewalk, or open-air element</li>
+    <li>Within 1 mile of residential density (tourist markets excepted)</li>
+    <li>Population 100K+ metro, median HHI $45K-$120K</li>
+    <li>Max 1 location per 500K metro population</li>
+    <li>Operator: 3+ years experience, local, $150K+ liquid (Heritage) / $300K+ (Partner)</li>
+  </ul>
+
+  <h3>Target Markets</h3>
+
+  <h4><span class="tier tier-1">Tier 1</span> Florida First (2027-2028)</h4>
+  <p>Home state. Austin knows the market. Drive-distance support.</p>
+  <div class="card-grid">
+    <div class="card"><h4>Tampa / St. Pete</h4><p>Strong bar scene, waterfront, growing metro</p></div>
+    <div class="card"><h4>Jacksonville Beach</h4><p>Coastal, younger demo, underserved</p></div>
+    <div class="card"><h4>Key West</h4><p>Tourist premium, bars ARE the culture</p></div>
+    <div class="card"><h4>Delray / Boca</h4><p>Upscale coastal, proximity to flagship</p></div>
+  </div>
+
+  <h4><span class="tier tier-2">Tier 2</span> Southeast (2029-2030)</h4>
+  <div class="card-grid">
+    <div class="card"><h4>Charleston, SC</h4><p>Historic city, preservation culture</p></div>
+    <div class="card"><h4>Savannah, GA</h4><p>Open container, tourism + local</p></div>
+    <div class="card"><h4>Nashville, TN</h4><p>Bar culture capital (selective &mdash; saturated)</p></div>
+    <div class="card"><h4>New Orleans, LA</h4><p>Heritage bar culture exists. Proceed with caution.</p></div>
+  </div>
+
+  <h4><span class="tier tier-3">Tier 3</span> National (2031+)</h4>
+  <div class="card-grid">
+    <div class="card"><h4>Austin, TX</h4><p>Bar culture, growth (gentrification risk)</p></div>
+    <div class="card"><h4>San Diego, CA</h4><p>Beach culture, high income</p></div>
+    <div class="card"><h4>Portland, ME</h4><p>Passionate bar culture, waterfront</p></div>
+    <div class="card"><h4>Asheville, NC</h4><p>Craft beverage capital</p></div>
+  </div>
+
+  <h3>Markets to Avoid</h3>
+  <p>Las Vegas (gimmick), Times Square (authenticity dies), suburban strip malls (anywhere), markets without existing bar culture.</p>
+
+  <h3>Physical Space</h3>
+  <table>
+    <tr><th>Spec</th><th>Range</th><th>Notes</th></tr>
+    <tr><td>Minimum</td><td>1,200 sq ft</td><td>Intimate, 80-100 cap</td></tr>
+    <tr><td>Ideal</td><td>2,000-3,500 sq ft</td><td>120-200 cap</td></tr>
+    <tr><td>Maximum</td><td>5,000 sq ft</td><td>Flagship tier only</td></tr>
+  </table>
+  <p><strong>Required:</strong> Full bar, history wall, outdoor element, jukebox/curated music.<br>
+  <strong>Prohibited:</strong> Wall-to-wall TVs, bottle service, VIP, dress codes, anything "nightclub."</p>
+</section>
+
+<!-- COMPS -->
+<section id="comps">
+  <h2>Comparable Analysis: Coyote Ugly</h2>
+  <p>Founded 1993 by Liliana Lovell. Single NYC bar to international franchise through a GQ article and $110M movie. The closest structural comp to what Elbo Room is attempting.</p>
+
+  <h3>Expansion Timeline</h3>
+  <table>
+    <tr><th>Phase</th><th>Years</th><th>Key Events</th></tr>
+    <tr><td>Proof of Concept</td><td>1993-2000</td><td>Single NYC location. GQ article (1997). Movie ($110M gross, 2000).</td></tr>
+    <tr><td>Controlled Expansion</td><td>2001-2008</td><td>Company-owned first: Vegas, NOLA, Austin, Nashville. CMT reality show.</td></tr>
+    <tr><td>Franchise Rollout</td><td>2009+</td><td>International (Russia, UK). Florida markets. Domestic saturation.</td></tr>
+  </table>
+
+  <h3>Lessons to Steal</h3>
+  <ul>
+    <li><strong>Company-owned testing before licensing.</strong> Lovell opened 6+ locations before selling a franchise. Even 1-2 Higney-run pilots would validate the model.</li>
+    <li><strong>Define the experience concretely.</strong> Everyone knows what Coyote Ugly is. "Heritage dive bar" needs to be equally clear.</li>
+    <li><strong>Tourist markets first.</strong> Novelty premium helps early locations succeed.</li>
+    <li><strong>Training is non-negotiable.</strong> If the Elbo Room way can't be taught in 2-3 weeks, it's not licensable.</li>
+  </ul>
+
+  <h3>Lessons to Avoid</h3>
+  <ul>
+    <li><strong>Don't build around a gimmick.</strong> Bar-top dancing has a ceiling. History doesn't.</li>
+    <li><strong>Don't franchise too early.</strong> Coyote Ugly waited 8 years.</li>
+    <li><strong>Don't chase international before owning domestic.</strong></li>
+    <li><strong>Don't depend on a single talent type.</strong> Model works with good bartenders, not performer-bartenders.</li>
+  </ul>
+
+  <h3>Where Elbo Room Diverges</h3>
+  <ul>
+    <li><strong>Brand depth:</strong> 88 years of layered history vs. a single gimmick</li>
+    <li><strong>Customer lifecycle:</strong> A dive bar ages WITH its customers</li>
+    <li><strong>Concept transferability:</strong> "Authentic local bar" is infinite. "Bar-top dancing" is finite.</li>
+    <li><strong>Operator profile:</strong> Heritage attracts longevity operators, not entertainment entrepreneurs</li>
+  </ul>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline">
+  <h2>Critical Path</h2>
+  <table>
+    <tr><th>#</th><th>Milestone</th><th>Target</th><th>Status</th></tr>
+    <tr><td>1</td><td>Franchise attorney engagement</td><td>Q2 2026</td><td><span class="badge badge-blocked">Bottleneck</span></td></tr>
+    <tr><td>2</td><td>Entity structure finalization</td><td>Q3 2026</td><td><span class="badge badge-pending">Pending #1</span></td></tr>
+    <tr><td>3</td><td>Trademark filing</td><td>Q3 2026</td><td><span class="badge badge-pending">Pending #1</span></td></tr>
+    <tr><td>4</td><td>Brand guidelines completion</td><td>Q4 2026</td><td><span class="badge badge-pending">Not started</span></td></tr>
+    <tr><td>5</td><td>Pilot location identification</td><td>2027</td><td><span class="badge badge-pending">Not started</span></td></tr>
+    <tr><td>6</td><td>First Heritage License signed</td><td>2027</td><td><span class="badge badge-pending">Not started</span></td></tr>
+    <tr><td>7</td><td>SBA 504 application</td><td>2029-2030</td><td><span class="badge badge-pending">Future</span></td></tr>
+    <tr><td>8</td><td>Property acquisition</td><td>2030-2032</td><td><span class="badge badge-pending">Future</span></td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>The franchise attorney is the single most important hire in the entire project.</strong> Entity structure, SBA compatibility, licensing terms, trademark strategy &mdash; everything flows from their guidance on how Florida franchise law and FTC rules apply to the Heritage License model.
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <h2>Team</h2>
+  <div class="card-grid">
+    <div class="card">
+      <h4>Austin Higney</h4>
+      <p>Elbo Room ownership, business decisions, financial authority</p>
+    </div>
+    <div class="card">
+      <h4>Zac Payne</h4>
+      <p>Strategy originator, licensing vision, execution partner</p>
+    </div>
+    <div class="card">
+      <h4>Artemis <span style="color: var(--text-muted); font-size: 0.85rem;">(AI)</span></h4>
+      <p>Financial modeling, CRE analysis, legal research</p>
+    </div>
+    <div class="card">
+      <h4>Sable <span style="color: var(--text-muted); font-size: 0.85rem;">(AI)</span></h4>
+      <p>Brand strategy, comp analysis, operational planning</p>
+    </div>
+  </div>
+
+  <h3>Risk Factors</h3>
+  <ul>
+    <li>Property value exceeds projections (Las Olas Ocean development)</li>
+    <li>SBA disqualification on entity structure</li>
+    <li>Early licensee failure damages brand</li>
+    <li>Family alignment on capital allocation</li>
+    <li>Property owner sells to developer before 2036</li>
+    <li>Economic downturn impacts flagship + pipeline</li>
+  </ul>
+
+  <h3>What Breaks the Model</h3>
+  <ul>
+    <li>Flagship revenue declines (destroys borrowing capacity AND licensing credibility)</li>
+    <li>First 3 licensed locations underperform (kills pipeline momentum)</li>
+    <li>Property owner sells before 2036 (accelerates timeline catastrophically)</li>
+    <li>Family disagrees on expansion</li>
+  </ul>
+</section>
+
+<!-- CONTRIBUTOR NOTE -->
+<section id="contribute">
+  <h2>Contributing</h2>
+  <div class="contrib-note">
+    <p><strong>Repository:</strong> <a href="https://github.com/artemis-lgtm/Elbo-Room-Franchise">artemis-lgtm/Elbo-Room-Franchise</a></p>
+    <p><strong>Site source:</strong> <code>docs/index.html</code> &mdash; hosted via GitHub Pages</p>
+    <p style="margin-top: 12px;"><strong>To add content:</strong> Push markdown files to the appropriate directory (<code>research/</code>, <code>strategy/</code>, <code>legal/</code>, <code>properties/</code>, <code>assets/</code>) and update the relevant section in <code>docs/index.html</code>. Or just push the markdown and tag Artemis to integrate it into the site.</p>
+    <p style="margin-top: 12px;"><strong>Sable's pending docs:</strong> Margaritaville model, brand history, franchise-vs-licensing analysis, attorney requirements guide. Push to the directories listed in README.md &mdash; Artemis will pull them into the site.</p>
+  </div>
+</section>
+
+<footer>
+  <p>Elbo Room Heritage License Program &mdash; Confidential Business Strategy</p>
+  <p style="margin-top: 4px;">Last updated: March 25, 2026</p>
+</footer>
+
+</body>
+</html>
