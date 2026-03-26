@@ -5,6 +5,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Elbo Room Heritage License Program</title>
   <style>
+    /* Password Gate */
+    #password-gate {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: #0d0d0d; z-index: 99999;
+      display: flex; align-items: center; justify-content: center; flex-direction: column;
+      font-family: 'Georgia', 'Times New Roman', serif;
+    }
+    #password-gate h2 { color: #c9a84c; font-weight: 400; margin-bottom: 24px; font-size: 1.6rem; }
+    #password-gate input {
+      background: #1a1a1a; border: 1px solid #2a2a2a; color: #e0e0e0;
+      padding: 12px 20px; font-size: 1.1rem; text-align: center; border-radius: 4px;
+      font-family: inherit; width: 200px; letter-spacing: 0.15em;
+    }
+    #password-gate input:focus { outline: none; border-color: #c9a84c; }
+    #password-gate .error { color: #c44; margin-top: 12px; font-size: 0.9rem; display: none; }
+    #password-gate button {
+      margin-top: 16px; background: #c9a84c; color: #0d0d0d; border: none;
+      padding: 10px 32px; font-size: 1rem; cursor: pointer; border-radius: 4px;
+      font-family: inherit; font-weight: 600;
+    }
+    #password-gate button:hover { background: #e0c060; }
+    #page-content { display: none; }
+  </style>
+  <style>
     :root {
       --bg: #0d0d0d;
       --surface: #1a1a1a;
@@ -222,6 +246,15 @@
   </style>
 </head>
 <body>
+
+<div id="password-gate">
+  <h2>Elbo Room Heritage</h2>
+  <input type="password" id="gate-input" placeholder="Enter password" autofocus>
+  <button onclick="checkPassword()">Enter</button>
+  <p class="error" id="gate-error">Incorrect password</p>
+</div>
+
+<div id="page-content">
 
 <div class="hero">
   <h1>Elbo Room</h1>
@@ -909,6 +942,30 @@
   <p>Elbo Room Heritage License Program &mdash; Confidential Business Strategy</p>
   <p style="margin-top: 4px;">Last updated: March 25, 2026</p>
 </footer>
+
+</div><!-- end page-content -->
+
+<script>
+function checkPassword() {
+  var input = document.getElementById('gate-input');
+  if (input.value === '3045') {
+    document.getElementById('password-gate').style.display = 'none';
+    document.getElementById('page-content').style.display = 'block';
+    sessionStorage.setItem('elbo-auth', '1');
+  } else {
+    document.getElementById('gate-error').style.display = 'block';
+    input.value = '';
+    input.focus();
+  }
+}
+document.getElementById('gate-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkPassword();
+});
+if (sessionStorage.getItem('elbo-auth') === '1') {
+  document.getElementById('password-gate').style.display = 'none';
+  document.getElementById('page-content').style.display = 'block';
+}
+</script>
 
 </body>
 </html>
